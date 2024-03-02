@@ -1,0 +1,21 @@
+.custom_card_base
+    width: 120px
+    height: 120px
+    margin: 0.5rem
+    border-radius: 0.5rem
+    background: #ffffff
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    border: 1px solid #e4e4e4a0 // TODO :: Store is style variables
+    transition: opacity 0.5s
+
+.custom_card
+    @extend .custom_card_base
+
+.custom_card_clickable
+    @extend .custom_card_base
+    &:hover
+        opacity: 0.5
+        cursor: pointer

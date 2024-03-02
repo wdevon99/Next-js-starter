@@ -1,0 +1,28 @@
+.auth_button
+  background: #fff
+  border: none
+  width: 100%
+  padding: 8px
+  display: flex
+  align-items: center
+  justify-content: center
+  border: 1px solid #e4e4e4a0
+  cursor: pointer
+  border-radius: 5px
+  margin: 10px 0px
+  transition: opacity 0.5s
+  .icon
+    margin-right: 8px
+    margin-bottom: 2px
+  &:hover
+    opacity: 0.5
+
+.auth_button_google
+  @extend .auth_button
+
+.auth_button_github
+  @extend .auth_button
+  background: #292929
+  color: #fff
+  &:hover
+    opacity: 0.8
