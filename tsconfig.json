@@ -25,6 +25,8 @@
       "@utils/*": ["src/utils/*"],
       "@models/*": ["src/models/*"],
       "@services/*": ["src/services/*"],
+      "@layouts/*": ["src/layouts/*"],
+      "@providers/*": ["src/providers/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
