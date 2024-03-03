@@ -24,6 +24,24 @@ export default function Dashboard() {
     getAllTodos();
   }, [])
 
+  const getAllTodos = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await TodoService.getAllTodos();
+
+      // TODO :: Handle errors based on response status
+      const todos = await response.json();
+
+      setTodos(Array.isArray(todos) ? todos : []);
+
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const createTodo = async () => {
     setIsBusy(true);
 
@@ -47,25 +65,7 @@ export default function Dashboard() {
     }
   };
 
-  const getAllTodos = async () => {
-    setIsLoading(true);
-
-    try {
-      const response = await TodoService.getAllTodos();
-      const todos = await response.json();
-      setTodos(todos);
-
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const deleteTodo = async (todoId: string) => {
-
-    console.log("todoId => ", todoId);
-
     const response = await TodoService.deleteTodo(todoId);
     const deletedTodoId = await response.text();
     const filteredTodos = todos?.filter((t: any) => t._id !== deletedTodoId);

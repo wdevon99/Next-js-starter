@@ -31,14 +31,14 @@ function AuthCard() {
 
   if (session) {
     return (
-      <Card style={{ width: CARD_WIDTH, height: CARD_HEIGHT }} >
+      <Card style={{ width: CARD_WIDTH }} >
         <div className={styles.container}>
           <p className={styles.label}>You are signed in as <b>{session?.user?.name}</b>.</p>
           <Button
             type="primary"
             className={styles.button}
             onClick={() => router.push('/dashboard')}
-            block={true}
+            block
           >
             Go to Dashboard
           </Button>
@@ -46,8 +46,8 @@ function AuthCard() {
             className={styles.button}
             type="dashed"
             onClick={() => signOut()}
-            block={true}
-            danger={true}
+            block
+            danger
           >
             Log out
           </Button>
@@ -59,7 +59,7 @@ function AuthCard() {
 
   if (isLoading) {
     return (
-      <Card style={{ width: CARD_WIDTH, alignItems: 'center', justifyContent: 'center' }} >
+      <Card style={{ width: CARD_WIDTH }} >
         <div className={styles.container}>
           <SkeletonButton active={true} block={true} style={{ marginBottom: 10, marginTop: 10, height: 42 }} />
           <SkeletonButton active={true} block={true} style={{ marginBottom: 10, height: 42 }} />
