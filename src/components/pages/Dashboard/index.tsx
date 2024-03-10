@@ -1,9 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { Button, Card, Form, Input, List, Modal, Skeleton, message } from "antd";
-import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+import { Button, Card, FloatButton, Form, Input, List, Modal, Skeleton, Tag, message } from "antd";
+import { PlusOutlined, DeleteOutlined, ArrowLeftOutlined, UndoOutlined } from '@ant-design/icons';
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import TextArea from "antd/es/input/TextArea";
 import TodoService from "@services/TodoService";
 import styles from "./styles.module.sass";
@@ -11,6 +12,7 @@ import styles from "./styles.module.sass";
 export default function Dashboard() {
   const CARD_WIDTH = 670;
 
+  const router = useRouter();
   const { data: session } = useSession();
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -60,6 +62,16 @@ export default function Dashboard() {
     }
   };
 
+  const updateTodoStatus = async (todoId: string, isComplete: boolean) => {
+    const response = await TodoService.updateTodoStatus(todoId, !isComplete);
+    const updatedTodo: Todo = await response.json();
+    const updatedTodos = todos?.map((todo: Todo) => todo._id.toString() === updatedTodo._id.toString() ? updatedTodo : todo);
+
+    messageApi.success(updatedTodo.isComplete ? "Completed todo! 🎉" : "Undo success");
+
+    setTodos(updatedTodos);
+  };
+
   const deleteTodo = async (todoId: string) => {
     const response = await TodoService.deleteTodo(todoId);
     const deletedTodoId = await response.text();
@@ -92,12 +104,23 @@ export default function Dashboard() {
           loadMore={null}
           dataSource={todos}
           renderItem={(todo: Todo) => (
-            <List.Item actions={[<Button type="link" danger key="list-delet" onClick={() => deleteTodo(todo._id)}><DeleteOutlined /></Button>]}>
+            <List.Item
+              actions={[
+                <Button type={todo.isComplete ? 'dashed' : 'dashed'} key="done" onClick={() => updateTodoStatus(todo._id, todo.isComplete)}>
+                  {todo.isComplete ? <UndoOutlined /> : 'Complete'}
+                </Button>,
+                <Button type="dashed" danger key="delete" onClick={() => deleteTodo(todo._id)}>
+                  <DeleteOutlined />
+                </Button>
+              ]}
+            >
               <Skeleton title={false} loading={isLoading} active>
                 <List.Item.Meta
-                  title={todo?.todoTitle}
-                  description={todo?.todoDescription}
+                  title={<span className={todo.isComplete ? styles.completedTodoText : ''}>{todo?.todoTitle}</span>}
+                  description={<span className={todo.isComplete ? styles.completedTodoText : ''}>{todo?.todoDescription}</span>}
                 />
+                {todo.isComplete ? <Tag color="success">Completed</Tag> : null}
+
               </Skeleton>
             </List.Item>
           )}
@@ -133,6 +156,11 @@ export default function Dashboard() {
           </Form.Item>
         </Form>
       </Modal>
+      <FloatButton
+        icon={<ArrowLeftOutlined />}
+        style={{ left: 30, top: 30 }}
+        onClick={() => router.push('/')}
+      />
     </main>
   );
 }

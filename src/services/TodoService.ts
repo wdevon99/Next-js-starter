@@ -17,10 +17,17 @@ const deleteTodo = async (todoId: string) => {
   });
 };
 
+const updateTodoStatus = async (todoId: string, isComplete: boolean) => {
+  return await fetch(`/api/todo?todoId=${todoId}&isComplete=${isComplete}`, {
+    method: "PUT",
+  });
+};
+
 const TodoService = {
   createTodo,
   getAllTodos,
   deleteTodo,
+  updateTodoStatus,
 };
 
 export default TodoService;

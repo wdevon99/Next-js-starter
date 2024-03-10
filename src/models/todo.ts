@@ -13,6 +13,10 @@ const TodoSchema = new Schema({
     type: String,
     required: [true, "todoDescription is required."],
   },
+  isComplete: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const Todo = models.Todo || model("Todo", TodoSchema);

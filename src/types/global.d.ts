@@ -14,5 +14,6 @@ type Todo = {
   _id: string;
   todoTitle: string;
   todoDescription: string;
+  isComplete: boolean;
   creator: User;
 };
