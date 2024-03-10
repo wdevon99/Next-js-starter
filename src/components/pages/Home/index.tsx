@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Row } from "antd";
 import AuthCard from "@components/molecules/AuthCard";
-import IconCard from "@components/molecules/IconCard";
+import IconCard from "@components/atoms/IconCard";
 import TECH_STACK_INFO from "@constants/TechStackInfo";
 import CustomAvatar from "@components/atoms/CustomAvatar";
 import styles from "./styles.module.sass";
