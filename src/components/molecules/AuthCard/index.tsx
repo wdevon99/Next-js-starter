@@ -9,8 +9,7 @@ import AuthButton from "@components/atoms/AuthButton";
 import styles from './styles.module.sass';
 
 function AuthCard() {
-  const CARD_WIDTH = 670;
-  const CARD_HEIGHT = 160;
+  const CARD_WIDTH = 678;
 
   const { data: session } = useSession();
   const router = useRouter()

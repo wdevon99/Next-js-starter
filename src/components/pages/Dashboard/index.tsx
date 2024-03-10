@@ -17,7 +17,7 @@ export default function Dashboard() {
   const [form] = Form.useForm();
   const [isBusy, setIsBusy] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [isAddTodoModalOpen, setIsAddTodoModalOpen] = useState(false);
 
   useEffect(() => {
@@ -29,16 +29,11 @@ export default function Dashboard() {
 
     try {
       const response = await TodoService.getAllTodos();
-
-      // TODO :: Handle errors based on response status
-      const todos = await response.json();
-
+      const todos: Todo = await response.json();
       setTodos(Array.isArray(todos) ? todos : []);
-
+      setIsLoading(false);
     } catch (error) {
       console.error(error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -96,7 +91,7 @@ export default function Dashboard() {
           itemLayout="horizontal"
           loadMore={null}
           dataSource={todos}
-          renderItem={(todo, index) => (
+          renderItem={(todo: Todo) => (
             <List.Item actions={[<Button type="link" danger key="list-delet" onClick={() => deleteTodo(todo._id)}><DeleteOutlined /></Button>]}>
               <Skeleton title={false} loading={isLoading} active>
                 <List.Item.Meta

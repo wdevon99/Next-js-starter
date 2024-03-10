@@ -2,7 +2,7 @@ import Image from "next/image";
 import styles from "./styles.module.sass";
 import AUTH_PROVIDERS from "@constants/AuthProviders";
 
-function AuthButton(props: any) {
+function AuthButton(props: Props) {
   const { text, providername } = props;
 
   const getButtonClass = () => {
@@ -28,6 +28,12 @@ function AuthButton(props: any) {
       {text}
     </button>
   )
+}
+
+type Props = {
+  text: string,
+  providername: string,
+  onClick: () => void
 }
 
 export default AuthButton;

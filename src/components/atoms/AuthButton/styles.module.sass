@@ -1,14 +1,16 @@
+@import "@styles/variables.module.sass"
+
 .auth_button
-  background: #fff
+  background: $secondary-surface-color
   border: none
   width: 100%
   padding: 8px
   display: flex
   align-items: center
   justify-content: center
-  border: 1px solid #e4e4e4a0
+  border: 1px solid $border-color
   cursor: pointer
-  border-radius: 5px
+  border-radius: $border-radius
   margin: 10px 0px
   transition: opacity 0.5s
   .icon
@@ -22,7 +24,7 @@
 
 .auth_button_github
   @extend .auth_button
-  background: #292929
-  color: #fff
+  background: $github-primary-color
+  color: $font-color-light
   &:hover
     opacity: 0.8

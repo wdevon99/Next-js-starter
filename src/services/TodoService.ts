@@ -1,5 +1,3 @@
-// TODO :: Handle typing
-
 const createTodo = async (todoTitle: string, todoDescription: string) => {
   return await fetch("/api/todo", {
     method: "POST",

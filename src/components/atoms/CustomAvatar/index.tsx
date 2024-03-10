@@ -2,7 +2,7 @@ import { Avatar } from "antd";
 import styles from "./styles.module.sass";
 import Image from "next/image";
 
-function CustomAvatar({ size = 'large', image, mainText, subText }: any) {
+function CustomAvatar({ size = 'large', image, mainText, subText }: Props) {
 
   const renderLabels = () => {
     if (!mainText && !subText) return;
@@ -24,6 +24,13 @@ function CustomAvatar({ size = 'large', image, mainText, subText }: any) {
       {renderLabels()}
     </div>
   )
+}
+
+type Props = {
+  size?: 'large' | 'small' | 'default' | number,
+  image: string,
+  mainText: string,
+  subText: string
 }
 
 export default CustomAvatar;

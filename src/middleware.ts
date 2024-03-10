@@ -9,13 +9,15 @@ export async function middleware(request: NextRequest) {
   const isProtectedRoute = PROTECTED_ROUTES.some((route: string) => request.nextUrl?.pathname?.startsWith(route));
 
   if (isProtectedApiRoute) {
-    if (!isAuthenticated(request)) {
+    const isAuth = await isAuthenticated(request);
+    if (!isAuth) {
       return Response.json({ success: false, message: "Authentication failed" }, { status: 401 });
     }
   }
 
   if (isProtectedRoute) {
-    if (!isAuthenticated(request)) {
+    const isAuth = await isAuthenticated(request);
+    if (!isAuth) {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }
@@ -24,6 +26,6 @@ export async function middleware(request: NextRequest) {
 }
 
 const isAuthenticated = async (request: NextRequest) => {
-  const token = await getToken({ req: request });
+  const token: any = await getToken({ req: request });
   return !!token && Date.now() <= token.exp * 1000;
 };

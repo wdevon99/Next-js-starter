@@ -1,9 +1,10 @@
-import { ConfigProvider, theme } from "antd";
+import { ConfigProvider } from "antd";
+import Colors from "@styles/variables.module.sass";
 
-const AntdConfigProvider = ({ children, session }: any) => {
+const AntdConfigProvider = ({ children }: Props) => {
   const THEME = {
     token: {
-      colorPrimary: '#292929', // TODO :: Store colors in constants
+      colorPrimary: Colors.primaryColor,
     },
   }
 
@@ -12,6 +13,10 @@ const AntdConfigProvider = ({ children, session }: any) => {
       {children}
     </ConfigProvider>
   )
+}
+
+type Props = {
+  children: React.ReactNode,
 }
 
 export default AntdConfigProvider;
