@@ -29,8 +29,8 @@ function CustomAvatar({ size = 'large', image, mainText, subText }: Props) {
 type Props = {
   size?: 'large' | 'small' | 'default' | number,
   image: string,
-  mainText: string,
-  subText: string
+  mainText?: string,
+  subText?: string
 }
 
 export default CustomAvatar;

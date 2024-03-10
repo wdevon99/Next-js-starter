@@ -1,12 +1,14 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { Button, Card, FloatButton, Form, Input, List, Modal, Skeleton, Tag, message } from "antd";
+import { Button, Card, FloatButton, Form, Input, List, Modal, Progress, Skeleton, message } from "antd";
 import { PlusOutlined, DeleteOutlined, ArrowLeftOutlined, UndoOutlined } from '@ant-design/icons';
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import TextArea from "antd/es/input/TextArea";
 import TodoService from "@services/TodoService";
+import CustomAvatar from "@components/atoms/CustomAvatar";
+import Colors from "@styles/variables.module.sass";
 import styles from "./styles.module.sass";
 
 export default function Dashboard() {
@@ -67,7 +69,7 @@ export default function Dashboard() {
     const updatedTodo: Todo = await response.json();
     const updatedTodos = todos?.map((todo: Todo) => todo._id.toString() === updatedTodo._id.toString() ? updatedTodo : todo);
 
-    messageApi.success(updatedTodo.isComplete ? "Completed todo! 🎉" : "Undo success");
+    messageApi.success(updatedTodo.isComplete ? "Completed todo 🎉" : "Undo success");
 
     setTodos(updatedTodos);
   };
@@ -81,8 +83,26 @@ export default function Dashboard() {
     setTodos(filteredTodos);
   };
 
+  const completedPercentage = () => {
+    if (!todos?.length) return 0;
+    const totalTodoCount = todos?.length;
+    const completedTodoCount = todos?.filter((todo: Todo) => todo.isComplete)?.length;
+
+    return Math.floor((completedTodoCount / totalTodoCount) * 100);
+  }
+
+  const getProgressBarColor = () => {
+    if (completedPercentage() === 100) return Colors.successColor;
+    if (completedPercentage() >= 50) return Colors.warningColor;
+    return Colors.errorColor;
+  }
+
   const renderHeader = () => (
     <>
+      <CustomAvatar
+        image={session?.user?.image}
+        size={60}
+      />
       <h1 className={styles.heading}>Hi {session?.user?.name?.split(' ')?.[0]} :)</h1>
       <h2 className={styles.sub_heading}>Track your todos with ease.</h2>
     </>
@@ -119,12 +139,13 @@ export default function Dashboard() {
                   title={<span className={todo.isComplete ? styles.completedTodoText : ''}>{todo?.todoTitle}</span>}
                   description={<span className={todo.isComplete ? styles.completedTodoText : ''}>{todo?.todoDescription}</span>}
                 />
-                {todo.isComplete ? <Tag color="success">Completed</Tag> : null}
-
               </Skeleton>
             </List.Item>
           )}
         />
+      </Card>
+      <Card style={{ width: CARD_WIDTH, marginTop: 20 }}>
+        <Progress percent={completedPercentage()} strokeColor={getProgressBarColor()} />
       </Card>
       <Modal
         title="Add new todo"
