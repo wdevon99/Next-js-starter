@@ -1,9 +1,8 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
-
-import { connectToDB } from "@utils/database";
 import User from "@models/user";
+import { connectToDB } from "@utils/database";
 
 const handler = NextAuth({
   providers: [
@@ -17,15 +16,19 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async signIn({ profile }) {
+    async signIn({ profile, account }) {
       try {
         await connectToDB();
-        const userExists = await User.findOne({ email: profile?.email });
-        if (!userExists) {
+        const provider = account?.provider;
+        const email = profile?.email;
+        const user = await User.findOne({ $and: [{ email }, { provider }] });
+
+        if (!user) {
           await User.create({
-            email: profile?.email,
+            email,
+            provider,
             username: profile?.name?.replace(" ", "").toLowerCase(),
-            image: profile?.picture,
+            image: profile?.picture || profile?.avatar_url,
           });
         }
         return true;
@@ -34,10 +37,12 @@ const handler = NextAuth({
         return false;
       }
     },
-    async jwt({ token }) {
-      await connectToDB();
-      const currentUserRecord = await User.findOne({ email: token?.email });
+    async jwt({ token, account }) {
+      const provider = account?.provider;
+      const email = token?.email;
 
+      await connectToDB();
+      const currentUserRecord = await User.findOne({ $and: [{ email }, { provider }] });
       if (currentUserRecord) {
         token.userId = currentUserRecord._id.toString();
       }
