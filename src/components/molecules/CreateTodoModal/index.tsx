@@ -1,12 +1,16 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import { Form, Input, Modal, message } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import TodoService from "@services/TodoService";
 
-export default function CreateTodoModal({ isOpen, setIsOpen, todos, setTodos }: Props) {
-
+export default function CreateTodoModal({
+  isOpen,
+  setIsOpen,
+  todos,
+  setTodos,
+}: Props) {
   const [form] = Form.useForm();
   const [messageApi] = message.useMessage();
   const [isBusy, setIsBusy] = useState(false);
@@ -24,9 +28,8 @@ export default function CreateTodoModal({ isOpen, setIsOpen, todos, setTodos }: 
 
       setTodos(updatedTodos);
       form?.resetFields();
-      setIsOpen(false)
+      setIsOpen(false);
       messageApi.success("Added new todo");
-
     } catch (error) {
       console.error(error);
     } finally {
@@ -43,23 +46,20 @@ export default function CreateTodoModal({ isOpen, setIsOpen, todos, setTodos }: 
       onOk={() => createTodo()}
       onCancel={() => {
         form?.resetFields();
-        setIsOpen(false)
+        setIsOpen(false);
       }}
     >
-      <p>What would you like to add to you todo list?</p>
-      <Form
-        form={form}
-        layout="vertical"
-      >
+      <p>What would you like to add to you to-do list?</p>
+      <Form form={form} layout="vertical">
         <Form.Item
           name="todoTitle"
-          rules={[{ required: true, message: 'Todo title is required!' }]}
+          rules={[{ required: true, message: "Todo title is required!" }]}
         >
           <Input placeholder="Todo title" />
         </Form.Item>
         <Form.Item
           name="todoDescription"
-          rules={[{ required: true, message: 'Todo description is required!' }]}
+          rules={[{ required: true, message: "Todo description is required!" }]}
         >
           <TextArea rows={4} placeholder="Todo description" />
         </Form.Item>
@@ -73,4 +73,4 @@ type Props = {
   setIsOpen: (isOpen: boolean) => void;
   todos: Todo[];
   setTodos: (todos: Todo[]) => void;
-}
+};
